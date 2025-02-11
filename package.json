@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "src/server.js",
     "scripts": {
-      "start": "prisma generate && node src/server.js",
+        "start": "prisma generate && node src/server.js",
         "dev": "nodemon src/server.js",
         "build": "prisma generate"
     },
@@ -25,6 +25,5 @@
     },
     "devDependencies": {
         "nodemon": "^3.0.2"
-        
     }
 }
