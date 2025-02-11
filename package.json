@@ -5,9 +5,8 @@
     "scripts": {
         "start": "node src/server.js",
         "dev": "nodemon src/server.js",
-        "postinstall": "prisma generate"
+        "postinstall": "prisma generate",
         "deploy": "prisma migrate deploy"
-
     },
     "dependencies": {
         "@prisma/client": "^5.8.1",
