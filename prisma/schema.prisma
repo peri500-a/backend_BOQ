@@ -34,7 +34,6 @@ model Company {
   logo        String?    // URL or path to logo
   logoMime    String?    // MIME type of the logo
   logoData    Bytes?     // Binary logo data
-
 }
 
 model PasswordReset {

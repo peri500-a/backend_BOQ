@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const { PrismaClient } = require('@prisma/client');
 const authRoutes = require('./routes/auth');
 const passwordResetRoutes = require('./routes/password-reset');
+const catalogRoutes = require('./routes/catalog');
+const quoteRoutes = require('./routes/quotes');
 
 // Initialize
 dotenv.config();
@@ -23,6 +25,8 @@ app.get('/', (req, res) => {
 // Auth routes
 app.use('/api/auth', authRoutes);
 app.use('/api/password-reset', passwordResetRoutes);
+app.use('/api/catalog', catalogRoutes);
+app.use('/api/quotes', quoteRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {
