@@ -1,0 +1,117 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  passwordResets PasswordReset[]
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  users     User[]
+  categories  Category[]
+  catalogItems CatalogItem[]
+  quotes       Quote[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  logo        String?    // URL or path to logo
+  logoMime    String?    // MIME type of the logo
+  logoData    Bytes?     // Binary logo data
+
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model CatalogItem {
+  id          String        @id @default(uuid())
+  code        String?       // Item code/SKU
+  description String
+  unit        String        // Unit of measurement
+  price       Float
+  category    Category      @relation(fields: [categoryId], references: [id])
+  categoryId  String
+  company     Company       @relation(fields: [companyId], references: [id])
+  companyId   String
+  isActive    Boolean       @default(true)
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  quoteItems  QuoteItem[]
+}
+
+model Category {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  company     Company       @relation(fields: [companyId], references: [id])
+  companyId   String
+  items       CatalogItem[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@unique([name, companyId])  // Prevent duplicate category names within same company
+}
+
+model Quote {
+  id          String      @id @default(uuid())
+  number      String      @unique
+  title       String?
+  status      QuoteStatus @default(DRAFT)
+  company     Company     @relation(fields: [companyId], references: [id])
+  companyId   String
+  items       QuoteItem[]
+  subtotal    Float
+  vat         Float       @default(18)
+  total       Float
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model QuoteItem {
+  id            String      @id @default(uuid())
+  quote         Quote       @relation(fields: [quoteId], references: [id])
+  quoteId       String
+  catalogItem   CatalogItem @relation(fields: [catalogItemId], references: [id])
+  catalogItemId String
+  quantity      Float
+  price         Float
+  discount      Float       @default(0)
+  total         Float
+  notes         String?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  APPROVED
+  REJECTED
+}

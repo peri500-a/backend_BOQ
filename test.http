@@ -1,0 +1,96 @@
+### Test server
+GET http://localhost:3000/
+
+### Register new user and company
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "test2@example.com",
+    "password": "password123",
+    "companyName": "Test Company",
+    "companyPhone": "123-456-7890",
+    "companyEmail": "company@example.com",
+    "companyAddress": "123 Test Street"
+}
+
+### Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "test2@example.com",
+    "password": "password123"
+}
+
+### Create Category
+POST http://localhost:3000/api/catalog/categories
+Authorization: Bearer your-token-here
+Content-Type: application/json
+
+{
+    "name": "Construction Materials",
+    "description": "Basic construction materials"
+}
+
+### Get Categories
+GET http://localhost:3000/api/catalog/categories
+Authorization: Bearer your-token-here
+
+### Create Catalog Item
+POST http://localhost:3000/api/catalog/items
+Authorization: Bearer your-token-here
+Content-Type: application/json
+
+{
+    "code": "CM001",
+    "description": "Portland Cement 50kg",
+    "unit": "bag",
+    "price": 25.50,
+    "categoryId": "category-id-here",
+    "notes": "Standard grade cement"
+}
+
+### Get Catalog Items
+GET http://localhost:3000/api/catalog/items
+Authorization: Bearer your-token-here
+
+### Search Items
+GET http://localhost:3000/api/catalog/search?query=cement&categoryId=category-id-here
+Authorization: Bearer your-token-here
+
+### Bulk Import Items
+POST http://localhost:3000/api/catalog/bulk-import
+Authorization: Bearer your-token-here
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "code": "CM001",
+      "description": "Portland Cement 50kg",
+      "unit": "bag",
+      "price": "25.50",
+      "category": "Construction Materials",
+      "notes": "Standard grade cement"
+    },
+    {
+      "code": "CM002",
+      "description": "Sand 1m³",
+      "unit": "m³",
+      "price": "35.00",
+      "category": "Construction Materials",
+      "notes": "Fine sand for concrete"
+    }
+  ]
+}
+
+### Export Items to CSV
+GET http://localhost:3000/api/catalog/export
+Authorization: Bearer your-token-here
+
+
+
+### Test Protected Route
+GET http://localhost:3000/api/auth/profile
+Authorization: "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjY2RkODgyOC05YjFmLTQ1YzktOWVlMi00NTcxZTQ5ZDQwYWYiLCJjb21wYW55SWQiOiI5YThkMzgzNi0yM2U3LTRiMzYtYTc2Ni00ZDQ5ZTE0MWJlMjUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3MzkyNTI5NDksImV4cCI6MTczOTMzOTM0OX0.HQDJ569uZ6-UVxSNI7PSITHxZOqgdbZluhNEn66G_UU",
